@@ -37,7 +37,9 @@ def cleaned_marathos_data():
     window_spec = Window.orderBy("event_name")
 
     df_speed = df_clean.withColumn("athlete_average_speed", col("athlete_average_speed").cast("double"))
+
+    df_fix = df_speed.withColumnRenamed("event_distance/length", "event_distance")
     
-    df_final = df_speed.withColumn("event_id", dense_rank().over(window_spec))
+    df_final = df_fix.withColumn("event_id", dense_rank().over(window_spec))
 
     return df_final
